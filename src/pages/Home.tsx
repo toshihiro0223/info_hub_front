@@ -1,12 +1,14 @@
-import  Header from './../components/Header';
-import { PicSlider } from './../components/PicSlider'
+import Header from './../components/Header';
+import { ImageSlider } from '../components/ImageSlider'
 
-export default function Home(){
+export default function Home() {
 
-    return(
+    return (
         <div>
             <Header />
-            <PicSlider />
+            <div className="flex flex-col items-center justify-center py-10">
+                <ImageSlider />
+            </div>
         </div>
     );
 }

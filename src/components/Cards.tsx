@@ -29,25 +29,27 @@ const Contents: { image: string, categoly: string, title: string, to: string }[]
         image: img4,
         categoly: "食品",
         title: "スーパー",
-        to: "/"
+        to: "/Inquiry"
     },
 ]
 
 export default function Cards() {
 
     return (
-        <div className="flex relative overflow-hidden w-full  min-w-2 p-4">
+        <div className="flex gap-6 overflow-x-auto p-6">
             {Contents.map((content, index) => (
-                <div className="w-full h-full object-cover select-none rounded-lg">
-                    <Card key={index}>
-                        <Link to={content.to}>
+                <div key={index} className="min-w-[250px] flex-shrink-0 rounded-lg shadow-md hover:shadow-lg transition-shadow">
+                    <Card >
+                        <Link to={content.to}　className="block">
                             <img
                                 src={content.image}
                                 alt={`Slide ${index}`}
-                                className="w-full h-full object-cover select-none rounded-lg"
+                               className="w-full h-40 object-cover"
                             />
-                            <p>カテゴリー:{content.categoly}</p>
-                            <h1>{content.title}</h1>
+                            <div className="p3">
+                            <p className="text-sm text-gray-500">カテゴリー:{content.categoly}</p>
+                            <h1 className="text-lg font-semibold">{content.title}</h1>
+                            </div>
                         </Link>
                     </Card>
                 </div>

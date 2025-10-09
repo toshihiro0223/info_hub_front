@@ -16,15 +16,19 @@ import {
     FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+import { Textarea } from "@/components/ui/textarea"
 import Header from "../components/Header"
 
 const FormSchema = z.object({
     username: z.string().min(2, {
         message: "Username must be at least 2 characters.",
     }),
-    email: z.string().email({
+    email: z.email({
         message: "正しいメールアドレスを入力してください"
     }),
+    textarea: z.string().min(1, {
+        message:"入力必須です"
+    })
 })
 
 export default function Inquiry() {
@@ -33,6 +37,7 @@ export default function Inquiry() {
         defaultValues: {
             username: "",
             email: "",
+            textarea:""
         },
     })
 
@@ -52,27 +57,55 @@ export default function Inquiry() {
                 <Header />
             </div>
             <div className="pt-20 flex flex-col items-center justify-center">
-                <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="w-2/3 space-y-6">
-                        <FormField
-                            control={form.control}
-                            name="username"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Username</FormLabel>
-                                    <FormControl>
-                                        <Input placeholder="shadcn" {...field} />
-                                    </FormControl>
-                                    <FormDescription>
-                                        This is your public display name.
-                                    </FormDescription>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        <Button type="submit">Submit</Button>
-                    </form>
-                </Form>
+                <div className="w-[80%] flex flex-col items-center justify-center">
+                    <Form {...form}>
+                        <form onSubmit={form.handleSubmit(onSubmit)} className="w-2/3 space-y-6">
+                            <FormField
+                                control={form.control}
+                                name="username"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>氏名</FormLabel>
+                                        <FormControl>
+                                            <Input placeholder="shadcn" {...field} />
+                                        </FormControl>
+                                        <FormDescription>
+                                            This is your public display name.
+                                        </FormDescription>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="email"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>メールアドレス</FormLabel>
+                                        <FormControl>
+                                            <Input placeholder="test@test.com" {...field} />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="textarea"
+                                render={({field}) => (
+                                    <FormItem>
+                                        <FormLabel>問合せ内容</FormLabel>
+                                        <FormControl>
+                                            <Textarea className="sm:h-[200px] md:h-[300px]" placeholder="UIをを善してほしい" {...field} />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <Button type="submit">Submit</Button>
+                        </form>
+                    </Form>
+                </div>
             </div>
         </div>
     )

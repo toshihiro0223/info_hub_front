@@ -1,6 +1,6 @@
 
 
-import { Card, CardContent } from "./ui/card";
+import { Card } from "./ui/card";
 import useEmblaCarousel from "embla-carousel-react"
 import Autoplay from "embla-carousel-autoplay"
 
@@ -10,8 +10,7 @@ import img3 from "../assets/images/サンプル3.jpg";
 import img4 from "../assets/images/サンプル4.jpg";
 import img5 from "../assets/images/サンプル5.jpg";
 import React from "react";
-import { Button } from "./ui/button";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+
 
 const images = [img1, img2, img3, img4, img5];
 
@@ -20,7 +19,7 @@ export function ImageSlider() {
       Autoplay({ delay: 2000, stopOnInteraction: false })
     )
   
-    const [emblaRef, emblaApi] = useEmblaCarousel(
+    const [emblaRef] = useEmblaCarousel(
       { loop: true, 
         align: "start",//左揃え
         skipSnaps:false,
@@ -28,9 +27,6 @@ export function ImageSlider() {
      },
       [autoplay.current]
     )
-  
-    const scrollPrev = React.useCallback(() => emblaApi && emblaApi.scrollPrev(), [emblaApi])
-    const scrollNext = React.useCallback(() => emblaApi && emblaApi.scrollNext(), [emblaApi])
   
     return (
       <Card className="relative overflow-hidden w-full ">
@@ -50,25 +46,6 @@ export function ImageSlider() {
             ))}
           </div>
         </div>
-  
-        {/* ← 左右ナビゲーションボタン */}
-        <Button
-          variant="ghost"
-          size="icon"
-          className="absolute top-1/2 left-3 -translate-y-1/2 bg-white/60 hover:bg-white"
-          onClick={scrollPrev}
-        >
-          <ChevronLeft />
-        </Button>
-  
-        <Button
-          variant="ghost"
-          size="icon"
-          className="absolute top-1/2 right-3 -translate-y-1/2 bg-white/60 hover:bg-white"
-          onClick={scrollNext}
-        >
-          <ChevronRight />
-        </Button>
       </Card>
     )
   }

@@ -148,7 +148,7 @@ export default function Header() {
                                     <Link to="/">
                                         <p>サインイン</p>
                                     </Link>
-                                    <Link to="">
+                                    <Link to="/Signup">
                                         <p>サインアップ</p>
                                     </Link>
                                 </div>

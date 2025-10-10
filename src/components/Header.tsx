@@ -20,6 +20,8 @@ import {
 } from "@/components/ui/popover"
 
 
+
+
 const tripComponents: { title: string; to: string; description: string }[] = [
     {
         "title": "観光Vlog",
@@ -36,7 +38,7 @@ const tripComponents: { title: string; to: string; description: string }[] = [
 const jobComponents: { title: string; to: string; description: string }[] = [
     {
         "title": "アルバイト",
-        "to": "/",
+        "to": "/Ptw",
         "description": "高知県でのアルバイトをまとめたページです"
     },
     {

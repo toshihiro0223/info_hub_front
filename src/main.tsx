@@ -5,13 +5,15 @@ import './styles/globals.css';
 
 import Home from './pages/Home'
 import Inquiry from './pages/Inquiry';
+import Ptw from './pages/Ptw'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter>
       <Routes>
-        <Route path='/' element={<Home />} />
-        <Route path='/Inquiry' element={<Inquiry />} />
+        <Route path = '/' element={<Home />} />
+        <Route path = '/Inquiry' element={<Inquiry />} />
+        <Route path = '/Ptw' element={<Ptw />} />
       </Routes>
     </BrowserRouter>
   </StrictMode>,

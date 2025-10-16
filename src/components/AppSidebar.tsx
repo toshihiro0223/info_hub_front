@@ -27,10 +27,10 @@ const items = [
     category: {
       title: "時給",
       ranges: [
-        {1: "~990"},
-        {2: "991~1200"},
-        {3: "1201~1400"},
-        {4: "1401~"},
+        { id: "1", value: "~990" },
+        { id: "2", value: "991~1200" },
+        { id: "3", value: "1201~1400" },
+        { id: "4", value: "1401~" },
 
       ]
     },
@@ -39,9 +39,9 @@ const items = [
     category: {
       title: "勤務地",
       ranges: [
-        {1: "高知市内"},
-        {2: "南国市内"},
-        {3: "四万十市内"},
+        { id: "1", value: "高知市内" },
+        { id: "2", value: "南国市内" },
+        { id: "3", value: "四万十市内" },
       ]
     },
   },
@@ -49,10 +49,10 @@ const items = [
     category: {
       title: "条件",
       ranges: [
-        {1: "日払い"},
-        {2: "短期"},
-        {3: "週一からOK"},
-        {4: "髪色自由"}
+        { id: "1", value: "日払い" },
+        { id: "2", value: "短期" },
+        { id: "3", value: "週一からOK" },
+        { id: "4", value: "髪色自由" }
       ]
     },
   }
@@ -60,11 +60,11 @@ const items = [
 
 //メイン処理
 export default function AppSidebar() {
-  
+
   //状態管理
-  const [selectedWages, setSelectedWages] = useState<string[]>([]);
-  const [selectedPlaces, setSelectedPlaces] = useState<string[]>([]);
-  const [selectedConditions, setSelectedConditions] = useState<string[]>([]);
+  const [selectedWages, setSelectedWages] = useState<{ id: string, value: string }[]>([]);
+  const [selectedPlaces, setSelectedPlaces] = useState<{ id: string, value: string }[]>([]);
+  const [selectedConditions, setSelectedConditions] = useState<{ id: string, value: string }[]>([]);
 
   /**
    * 
@@ -75,29 +75,34 @@ export default function AppSidebar() {
    */
   const handleCheckboxChange = (
     category: string,
-    value: string,
+    range: { id: string, value: string },
     checked: boolean
   ) => {
-    const updateSelected = (prev: string[]) =>
-      checked ? [...prev, value] : prev.filter((v) => v !== value);
+    const updateSelected = (
+      prev: { id: string; value: string }[],
+      range: { id: string; value: string },
+      checked: boolean
+    ) =>
+      checked ? [...prev, range] : prev.filter((v) => v.id !== range.id)
+
 
     switch (category) {
       case "時給":
-        setSelectedWages(updateSelected);
+        setSelectedWages((prev) => updateSelected(prev, range, checked))
         break;
       case "勤務地":
-        setSelectedPlaces(updateSelected);
+        setSelectedPlaces((prev) => updateSelected(prev, range, checked));
         break;
       case "条件":
-        setSelectedConditions(updateSelected);
+        setSelectedConditions((prev) => updateSelected(prev, range, checked));
         break;
     }
   };
-  
+
   const search = (wages: string[], place: string[], condition: string[]) => {
-      alert(`${wages},${place},${condition}`)
-    }
-  
+    alert(`${wages},${place},${condition}`)
+  }
+
   return (
     <Sidebar className="pt-4">
       <SidebarContent>
@@ -117,8 +122,8 @@ export default function AppSidebar() {
                     title === "時給"
                       ? selectedWages
                       : title === "勤務地"
-                      ? selectedPlaces
-                      : selectedConditions;
+                        ? selectedPlaces
+                        : selectedConditions;
 
                   return (
                     <SidebarMenuItem key={title}>
@@ -127,7 +132,7 @@ export default function AppSidebar() {
                         <AccordionContent>
                           {item.category.ranges.map((range, i) => {
                             const id = `${title}-${i}`;
-                            const isChecked = selectedValues.includes(range);
+                            const isChecked = selectedValues.some((v) => v.id === range.id)
 
                             return (
                               <div key={id} className="flex items-center space-x-2">
@@ -135,10 +140,10 @@ export default function AppSidebar() {
                                   id={id}
                                   checked={isChecked}
                                   onCheckedChange={(checked: boolean) =>
-                                    handleCheckboxChange(title, range, checked)
+                                    handleCheckboxChange(title, range, !!checked)
                                   }
                                 />
-                                <Label htmlFor={id}>{range}</Label>
+                                <Label htmlFor={`${title}-${range.id}`}>{range.value}</Label>
                               </div>
                             );
                           })}
@@ -149,11 +154,13 @@ export default function AppSidebar() {
                 })}
               </Accordion>
               <div className="flex flex-wrap items-center gap-2 md:flex-row">
-                <Button 
+                <Button
                   variant="outline"
-                  onClick={() =>
-                    search(selectedWages, selectedPlaces, selectedConditions)
-                  }
+                  onClick={() => search(
+                    selectedWages.map((v) => v.value),
+                    selectedPlaces.map((v) => v.value),
+                    selectedConditions.map((v) => v.value)
+                  )}
                 >検索</Button>
               </div>
 

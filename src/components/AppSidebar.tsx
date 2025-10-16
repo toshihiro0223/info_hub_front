@@ -27,10 +27,10 @@ const items = [
     category: {
       title: "時給",
       ranges: [
-        "~990",
-        "991~1200",
-        "1201~1400",
-        "1401~",
+        {1: "~990"},
+        {2: "991~1200"},
+        {3: "1201~1400"},
+        {4: "1401~"},
 
       ]
     },
@@ -39,10 +39,9 @@ const items = [
     category: {
       title: "勤務地",
       ranges: [
-        "高知市内",
-        "南国市内",
-        "安芸市内",
-        "四万十市内",
+        {1: "高知市内"},
+        {2: "南国市内"},
+        {3: "四万十市内"},
       ]
     },
   },
@@ -50,10 +49,10 @@ const items = [
     category: {
       title: "条件",
       ranges: [
-        "未経験歓迎",
-        "専門",
-        "飲食",
-        "営業",
+        {1: "日払い"},
+        {2: "短期"},
+        {3: "週一からOK"},
+        {4: "髪色自由"}
       ]
     },
   }
@@ -72,7 +71,7 @@ export default function AppSidebar() {
    * @param category 
    * @param value 
    * @param checked 
-   * @description 
+   * @description チェックボックスの状態管理関数
    */
   const handleCheckboxChange = (
     category: string,

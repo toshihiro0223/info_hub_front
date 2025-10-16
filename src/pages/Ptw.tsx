@@ -1,6 +1,7 @@
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
 import AppSidebar from '../components/AppSidebar'
 import Header from "@/components/Header"
+import CardList from "@/components/CardList"
 
 export default function Ptw() {
     return (
@@ -23,6 +24,7 @@ export default function Ptw() {
             <div>
               {/* 他のメインコンテンツ */}
               ここにメインコンテンツが入ります。
+              <CardList />
             </div>
           </main>
         </div>

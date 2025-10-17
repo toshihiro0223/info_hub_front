@@ -1,3 +1,4 @@
+<script src="http://localhost:5173"></script>
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
 import AppSidebar from '../components/AppSidebar'
 import Header from "@/components/Header"

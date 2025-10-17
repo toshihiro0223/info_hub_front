@@ -9,7 +9,6 @@ import Ptw from './pages/Ptw'
 import Signup from './pages/Signup';
 
 createRoot(document.getElementById('root')!).render(
-  <StrictMode>
     <BrowserRouter>
       <Routes>
         <Route path = '/' element={<Home />} />
@@ -18,5 +17,4 @@ createRoot(document.getElementById('root')!).render(
         <Route path = '/Signup' element ={ <Signup />} />
       </Routes>
     </BrowserRouter>
-  </StrictMode>
 )

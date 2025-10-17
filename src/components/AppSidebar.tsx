@@ -1,5 +1,3 @@
-//import { Calendar, Home, Inbox, Search, Settings } from "lucide-react"
-//ライブラリー
 import {
   Sidebar,
   SidebarContent,
@@ -7,7 +5,6 @@ import {
   SidebarGroupContent,
   SidebarGroupLabel,
   SidebarMenu,
-  //SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
 import { Checkbox } from "@/components/ui/checkbox"
@@ -19,89 +16,89 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion"
 import { Label } from "@/components/ui/label"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
-//メニューのアイテム
-const items = [
-  {
-    category: {
-      title: "時給",
-      ranges: [
-        { id: "1", value: "~990" },
-        { id: "2", value: "991~1200" },
-        { id: "3", value: "1201~1400" },
-        { id: "4", value: "1401~" },
+//APIレスポンスの型定義
+type range = {
+  id: string,
+  value: string
+};
 
-      ]
-    },
-  },
-  {
-    category: {
-      title: "勤務地",
-      ranges: [
-        { id: "1", value: "高知市内" },
-        { id: "2", value: "南国市内" },
-        { id: "3", value: "四万十市内" },
-      ]
-    },
-  },
-  {
-    category: {
-      title: "条件",
-      ranges: [
-        { id: "1", value: "日払い" },
-        { id: "2", value: "短期" },
-        { id: "3", value: "週一からOK" },
-        { id: "4", value: "髪色自由" }
-      ]
-    },
-  }
-]
+type category = {
+  title: string,
+  ranges: range[]
+};
 
-//メイン処理
+type responseItem = {
+  category: category
+};
+
+// メイン処理
 export default function AppSidebar() {
 
-  //状態管理
-  const [selectedWages, setSelectedWages] = useState<{ id: string, value: string }[]>([]);
-  const [selectedPlaces, setSelectedPlaces] = useState<{ id: string, value: string }[]>([]);
-  const [selectedConditions, setSelectedConditions] = useState<{ id: string, value: string }[]>([]);
+  const [items, setItems] = useState<responseItem[]>([]);
+  //APIの呼び出し
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const res = await fetch('https://68f1a3e9b36f9750dee9d1dd.mockapi.io/getPtw');
+        const json = await res.json();
+        console.log(json);
 
-  /**
-   * 
-   * @param category 
-   * @param value 
-   * @param checked 
-   * @description チェックボックスの状態管理関数
-   */
+        // 正しいフィールドから配列を取得
+        setItems(json || []);
+      } catch (err) {
+        console.error("APIの取得に失敗しました", err);
+      }
+
+    }
+    getData();
+  }, [])
+
+
+  // 状態管理
+  const [selectedValues, setSelectedValues] = useState<{
+    [category: string]: { id: string; value: string }[];
+  }>({
+    時給: [],
+    勤務地: [],
+    条件: []
+  });
+
+  //チェックボックスの状態変更処理
   const handleCheckboxChange = (
     category: string,
-    range: { id: string, value: string },
+    range: { id: string; value: string },
     checked: boolean
   ) => {
-    const updateSelected = (
-      prev: { id: string; value: string }[],
-      range: { id: string; value: string },
-      checked: boolean
-    ) =>
-      checked ? [...prev, range] : prev.filter((v) => v.id !== range.id)
-
-
-    switch (category) {
-      case "時給":
-        setSelectedWages((prev) => updateSelected(prev, range, checked))
-        break;
-      case "勤務地":
-        setSelectedPlaces((prev) => updateSelected(prev, range, checked));
-        break;
-      case "条件":
-        setSelectedConditions((prev) => updateSelected(prev, range, checked));
-        break;
-    }
+    setSelectedValues((prev) => {
+      const current = prev[category] || [];
+      const updated = checked
+        ? [...current, range]
+        : current.filter((v) => v.id !== range.id);
+      return { ...prev, [category]: updated };
+    });
   };
 
-  const search = (wages: string[], place: string[], condition: string[]) => {
-    alert(`${wages},${place},${condition}`)
-  }
+  //検索ボタン押下時のアクション
+  const search = () => {
+    const wages = selectedValues["時給"]?.map((v) => v.value) || [];
+    const places = selectedValues["勤務地"]?.map((v) => v.value) || [];
+    const conditions = selectedValues["条件"]?.map((v) => v.value) || [];
+
+    const getData = async () => {
+      try{
+        const res = await fetch('https://68f1a3e9b36f9750dee9d1dd.mockapi.io/getPtw')
+        const json = res.json();
+
+      }catch (error){
+        console.log("error")
+      }
+    }
+
+    getData()
+    alert(`時給: ${wages.join(", ")}\n勤務地: ${places.join(", ")}\n条件: ${conditions.join(", ")}`);
+  };
 
   return (
     <Sidebar className="pt-4">
@@ -118,12 +115,7 @@ export default function AppSidebar() {
               >
                 {items.map((item, index) => {
                   const title = item.category.title;
-                  const selectedValues =
-                    title === "時給"
-                      ? selectedWages
-                      : title === "勤務地"
-                        ? selectedPlaces
-                        : selectedConditions;
+                  const selected = selectedValues[title] || [];
 
                   return (
                     <SidebarMenuItem key={title}>
@@ -132,7 +124,7 @@ export default function AppSidebar() {
                         <AccordionContent>
                           {item.category.ranges.map((range, i) => {
                             const id = `${title}-${i}`;
-                            const isChecked = selectedValues.some((v) => v.id === range.id)
+                            const isChecked = selected.some((v) => v.id === range.id);
 
                             return (
                               <div key={id} className="flex items-center space-x-2">
@@ -143,7 +135,7 @@ export default function AppSidebar() {
                                     handleCheckboxChange(title, range, !!checked)
                                   }
                                 />
-                                <Label htmlFor={`${title}-${range.id}`}>{range.value}</Label>
+                                <Label htmlFor={id}>{range.value}</Label>
                               </div>
                             );
                           })}
@@ -153,21 +145,16 @@ export default function AppSidebar() {
                   );
                 })}
               </Accordion>
-              <div className="flex flex-wrap items-center gap-2 md:flex-row">
-                <Button
-                  variant="outline"
-                  onClick={() => search(
-                    selectedWages.map((v) => v.value),
-                    selectedPlaces.map((v) => v.value),
-                    selectedConditions.map((v) => v.value)
-                  )}
-                >検索</Button>
-              </div>
 
+              <div className="flex flex-wrap items-center gap-2 md:flex-row mt-4">
+                <Button variant="outline" onClick={search}>
+                  検索
+                </Button>
+              </div>
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
     </Sidebar>
-  )
+  );
 }

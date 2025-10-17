@@ -85,7 +85,7 @@ export default function AppSidebar() {
     const wages = selectedValues["時給"]?.map((v) => v.value) || [];
     const places = selectedValues["勤務地"]?.map((v) => v.value) || [];
     const conditions = selectedValues["条件"]?.map((v) => v.value) || [];
-
+/*
     const getData = async () => {
       try{
         const res = await fetch('https://68f1a3e9b36f9750dee9d1dd.mockapi.io/getPtw')
@@ -95,8 +95,9 @@ export default function AppSidebar() {
         console.log("error")
       }
     }
+      */
 
-    getData()
+    //getData()
     alert(`時給: ${wages.join(", ")}\n勤務地: ${places.join(", ")}\n条件: ${conditions.join(", ")}`);
   };
 

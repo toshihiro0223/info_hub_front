@@ -40,7 +40,7 @@ export default function Cards() {
             {Contents.map((content, index) => (
                 <div key={index} className="min-w-[250px] flex-shrink-0 rounded-lg shadow-md hover:shadow-lg transition-shadow">
                     <Card >
-                        <Link to={content.to} className="block">
+                        <Link to={content.to}　className="block">
                             <img
                                 src={content.image}
                                 alt={`Slide ${index}`}

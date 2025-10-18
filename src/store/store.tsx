@@ -1,10 +1,10 @@
 // store/store.ts
 import { configureStore } from '@reduxjs/toolkit'
-import counterReducer from './counterSlice'
+import workSliceReducer from './workSlice'
 
 export const store = configureStore({
   reducer: {
-    counter: counterReducer,
+    works: workSliceReducer,
   },
 })
 

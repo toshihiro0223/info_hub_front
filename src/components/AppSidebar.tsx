@@ -18,6 +18,12 @@ import {
 import { Label } from "@/components/ui/label"
 import { useEffect, useState } from "react"
 
+import { useDispatch } from "react-redux";
+import { type AppDispatch } from "../store/store"
+import { addWorks, clearWorks } from "../store/workSlice";
+
+
+
 //APIレスポンスの型定義
 type range = {
   id: string,
@@ -36,9 +42,11 @@ type responseItem = {
 // メイン処理
 export default function AppSidebar() {
 
+  const dispatch = useDispatch<AppDispatch>();
   const [items, setItems] = useState<responseItem[]>([]);
   //APIの呼び出し
   useEffect(() => {
+    dispatch(clearWorks());
     const getData = async () => {
       try {
         const res = await fetch('https://68f1a3e9b36f9750dee9d1dd.mockapi.io/getPtw');
@@ -85,19 +93,20 @@ export default function AppSidebar() {
     const wages = selectedValues["時給"]?.map((v) => v.value) || [];
     const places = selectedValues["勤務地"]?.map((v) => v.value) || [];
     const conditions = selectedValues["条件"]?.map((v) => v.value) || [];
-/*
+
     const getData = async () => {
       try{
-        const res = await fetch('https://68f1a3e9b36f9750dee9d1dd.mockapi.io/getPtw')
-        const json = res.json();
+        const res = await fetch('https://68f1a3e9b36f9750dee9d1dd.mockapi.io/getWork')
+        const json = await res.json();
+
+        dispatch(addWorks(json));
 
       }catch (error){
         console.log("error")
       }
     }
-      */
-
-    //getData()
+    
+    getData()
     alert(`時給: ${wages.join(", ")}\n勤務地: ${places.join(", ")}\n条件: ${conditions.join(", ")}`);
   };
 
